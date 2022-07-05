@@ -3,80 +3,55 @@ import 'package:flutter/material.dart';
 import 'ng_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const SampleApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class SampleApp extends StatelessWidget {
+  const SampleApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.aa
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Named Routes Demo',
-      // Start the app with the "/" named route. In this case, the app starts
-      // on the FirstScreen widget.
+      title: 'sample app',
       initialRoute: '/',
       routes: {
-        // When navigating to the "/" route, build the FirstScreen widget.
-        '/': (context) => const MyHomePage(title: 'HOME Page',),
-        // When navigating to the "/second" route, build the SecondScreen widget.
-        '/second': (context) => ngPage(),
+        '/': (context) => MainPage(),
+        '/Item0': (context) => ngPage(),
+
       },
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+class MainPage extends StatelessWidget {
+  final List<String> itemTitle = ["[1] 未作成", "[2] 未作成", "[3] 未作成", "[4] 未作成", "[5] 未作成", "[6] 未作成", "[7] 未作成", "[8] 未作成", "[9] 未作成", "[10] 未作成"];
+  final List<String> itemsPath = List<String>.generate(10, (i) => '/Item$i');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("sample_app"),
-        actions: const <Widget> [
-          Icon(Icons.add),
-          Icon(Icons.add_a_photo)
-        ],
+        backgroundColor: Colors.white,
+        title: const Text("メイン画面",
+          style: TextStyle(
+              color: Colors.black,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.bold),),
       ),
       body: Container(
-        child: Column(
-          children: [
-            Text("sample"),
-            RaisedButton(
-              child: Text("OK"),
-              onPressed:() {
-
-              },),
-          RaisedButton(
-            child: Text("NG"),
-            onPressed:() {
-              Navigator.pushNamed(context, "/second");
-            },),
-          ],
-        ),
+          child: ListView.builder(
+            itemCount: itemTitle.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                onTap: () {
+                  Navigator.pushNamed(context, itemsPath[index]);
+                },
+                contentPadding: EdgeInsets.all(15),
+                title: Text(itemTitle[index]),
+              );
+            },
+          )
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
